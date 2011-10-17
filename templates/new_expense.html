@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block title %}
+view expense
+{% endblock %}
+
+{% block content %}
+<h1>新建消费</h1>
+<div>
+    <form action="." method="post">
+        {{ form.as_p }}
+        <input type="submit" value="Go!" />
+    </form>
+</div>
+{% endblock %}
