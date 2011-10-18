@@ -6,6 +6,8 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.utils import simplejson
 from django.contrib.auth import authenticate, login, logout
+from django.core.mail import send_mail
+from django.contrib.auth.models import User
 
 from AA.models import AccountInfo, Expense, Approve
 from AA.forms import NewExpenseForm, NewAccountForm, LoginForm
@@ -45,10 +47,20 @@ def new_expense(request):
         newExpenseForm = NewExpenseForm(request.POST, instance=expense)
         if newExpenseForm.is_valid():
             newExpense = newExpenseForm.save()
-            approve = Approve()
-            approve.expense = newExpense
-            approve.status = 'I'
-            approve.save()
+            newExpense.save()
+            each = newExpense.each()
+            print each
+            for user in newExpense.participants.all():
+                try:
+                    user.accountinfo.balence -= each
+                    print user
+                    user.accountinfo.save()
+                except Exception as e:
+                    pass
+            #send_mail('AA notify', 'You expense %d at %s' % (each, newExpense.pub_datetime),
+            #        'ccl1115@gmail.com',
+            #        [user.email for user in expense.participants.all()],
+            #        fail_silently=True)
             return redirect('/')
     else:
         newExpenseForm = NewExpenseForm()
@@ -60,7 +72,7 @@ def view_expense(request, id):
     ''''''
     try:
         expense = Expense.objects.get(id=int(id))
-        if not request.user in expense.participant.all():
+        if not request.user in expense.participants.all():
             return render_to_response('error.html',
                     { 'error' : 'Permission Denied' })
         return render_to_response('view_expense.html', { 'expense' : expense },
@@ -71,7 +83,24 @@ def view_expense(request, id):
 
 @login_required
 def new_account(request):
-    pass
+    if not request.user.is_superuser:
+        return render_to_response('error.html', { 'error' : 'Permission Denied' })
+    if request.method == 'POST':
+        newAccountForm = NewAccountForm(request.POST) 
+        if newAccountForm.is_valid():
+            cd = newAccountForm.clean()
+            user = User.objects.create_user(cd['username'], cd['email'], cd['password'])
+            user.first_name = cd['first_name']
+            user.last_name = cd['last_name']
+            user.accountinfo = AccountInfo()
+            user.accountinfo.balence = 0.0
+            user.accountinfo.save()
+            user.save()
+            return redirect('/')
+    else:
+        newAccountForm = NewAccountForm()
+    return render_to_response('new_account.html', { 'form' : newAccountForm })
+
 
 @login_required
 def edit_account(request):

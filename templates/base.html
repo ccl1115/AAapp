@@ -4,7 +4,7 @@
     </head>
     <body>
         <div id="head">
-            <h1>AA</h1>
+            <h1> 欢迎使用AAapp, {{ user.get_full_name }}, 你上次登录时间是 {{ user.last_login }} </h1>
         </div>
         <div id="content">
         {% block content %}

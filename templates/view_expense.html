@@ -13,23 +13,11 @@ view expense
     <h2>{{ expense.title }}</h2>
     <p>{{ expense.pub_datetime }}</p>
     <p>{{ expense.each }} / {{ expense.money }}</p>
-    {% if expense.approve %}
-    <p>状态：{{ expense.approve.get_status_display }}</p>
     <p>参与者</p>
     <ul>
         {% for participant in expense.participants.all %}
-            <li> {{ participant.fullname }}
-            {% if participant in expense.approve.cons.all %}
-                <span> o_o </span>
-            {% endif %}
-            {% if participant in expense.approve.pros.all %}
-                <span> ^_^ </span>
-            {% else %}
-                <span> -_- </span>
-            {% endif %}
-            </li>
+            <li> {{ participant.get_full_name }} </li>
         {% endfor %}
     </ul>
-    {% endif %}
 </div>
 {% endblock %}

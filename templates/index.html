@@ -10,15 +10,17 @@ Welcome {{ user.username }}
 <ul>
     {% if user.is_superuser %}
     <li><a href="/new_expense">新消费</a></li>
+    <li><a href="/new_account">新账户</a></li>
+    {% else %}
+    <li>账户金额: {{ user.accountinfo.balence }}</li>
     {% endif %}
     <li><a href="/logout">登出</a></li>
-    <li><a href="/help">帮助</a></li>
 </ul>
 <div class="column">
     <h1>你参与的消费</h1>
-    {% if user.participant_set.all %}
+    {% if user.expense_set.all %}
         <ul>
-            {% for expense in user.participant_set.all %}
+            {% for expense in user.expense_set.all %}
             <a href="/view_expense/{{ expense.id }}/">
                 <li><div>
                     <p>{{ expense.title }}<span>({{ expense.each }})</p>
@@ -28,7 +30,7 @@ Welcome {{ user.username }}
             {% endfor %}
         </ul>
     {% else %}
-        <p>没有任何你发起的消费</p>
+        <p>没有任何你参与的消费</p>
     {% endif %}
 </div>
 {% endblock %}

@@ -19,5 +19,6 @@ urlpatterns = patterns('',
     url(r'^new_expense/$', 'AAapp.AA.views.new_expense'),
     url(r'^view_expense/(\d+)/', 'AAapp.AA.views.view_expense'),
     url(r'^logout/$', 'AAapp.AA.views.signoff'),
-    url(r'^help/$', 'AAapp.AA.views.help'),
+    url(r'^new_account/$', 'AAapp.AA.views.new_account'),
 )
+
