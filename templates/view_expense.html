@@ -7,14 +7,6 @@ view expense
 {% block content %}
 <ul>
     <li><a href="/">返回</a></li>
-    {% if not user in expense.participant.all %}
-        {% if not user in expense.approve.pros.all %}
-        <li><a href="pro">同意</a></li>
-        {% endif %}
-        {% if not user in expense.approve.cons.all %}
-        <li><a href="con">拒绝</a></li>
-        {% endif %}
-    {% endif %}
 </ul>
 <h1>查看消费</h1>
 <div>

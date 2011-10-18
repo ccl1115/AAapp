@@ -7,7 +7,6 @@ class AccountInfo(models.Model):
 
 class Expense(models.Model):
     title = models.CharField(max_length=100)
-    host = models.ForeignKey(User)
     participants = models.ManyToManyField(User, related_name="participant_set")
     pub_datetime = models.DateTimeField(auto_now_add=True)
     money = models.FloatField()

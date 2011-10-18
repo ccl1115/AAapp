@@ -36,6 +36,9 @@ def welcome(request):
 @login_required
 def new_expense(request):
     ''''''
+    if not request.user.is_superuser:
+        return render_to_response('error.html', 
+                { 'error': 'Permission Denied.' })
     if request.method == 'POST':
         expense = Expense()
         expense.host = request.user
@@ -57,6 +60,9 @@ def view_expense(request, id):
     ''''''
     try:
         expense = Expense.objects.get(id=int(id))
+        if not request.user in expense.participant.all():
+            return render_to_response('error.html',
+                    { 'error' : 'Permission Denied' })
         return render_to_response('view_expense.html', { 'expense' : expense },
                 context_instance=RequestContext(request))
     except Exception as e:
