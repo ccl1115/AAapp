@@ -43,20 +43,23 @@ def new_expense(request):
                 { 'error': 'Permission Denied.' })
     if request.method == 'POST':
         expense = Expense()
-        expense.host = request.user
-        newExpenseForm = NewExpenseForm(request.POST, instance=expense)
+        newExpenseForm = NewExpenseForm(request.POST)
         if newExpenseForm.is_valid():
-            newExpense = newExpenseForm.save()
-            newExpense.save()
-            each = newExpense.each()
-            for user in newExpense.participants.all():
+            cd = newExpenseForm.cleaned_data
+            expense.title = cd['title']
+            expense.money = cd['money']
+            expense.save()
+            expense.participants = cd['participants']
+            expense.save()
+            each = expense.each()
+            for user in expense.participants.all():
                 try:
                     user.accountinfo.balence -= each
                     user.accountinfo.save()
                 except Exception as e:
                     pass
-            send_mail('AAapp消费记录', '你花费了 %d 于 %s' % (each, newExpense.pub_datetime),
-                    'renrenaaapp@gmail.com',
+            send_mail('AAapp消费记录', '你花费了 %d 于 %s' % (each, expense.pub_datetime),
+                    'su@dustr.info',
                     [user.email for user in expense.participants.all()],
                     fail_silently=False)
             return redirect('/')

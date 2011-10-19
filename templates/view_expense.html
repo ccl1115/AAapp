@@ -12,7 +12,8 @@ view expense
 <div>
     <h2>{{ expense.title }}</h2>
     <p>{{ expense.pub_datetime }}</p>
-    <p>{{ expense.each }} / {{ expense.money }}</p>
+    <p>人均：{{ expense.each }}</p>
+    <p>总额：{{ expense.money }}</p>
     <p>参与者</p>
     <ul>
         {% for participant in expense.participants.all %}

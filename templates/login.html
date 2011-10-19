@@ -5,7 +5,6 @@
 {% block content %}
 <h1>Login to AA</h1>
 <div>
-    {{ form.errors }}
     <form action="." method="post">
         {% csrf_token %}
         {{ form.as_p }}

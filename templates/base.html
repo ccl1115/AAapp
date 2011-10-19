@@ -1,11 +1,13 @@
 <html>
     <head>
         <title>{% block title %}{% endblock %}</title>
-        <link href="/static/screen.css" rel="stylesheet" type="text/css" />
     </head>
     <body>
         <div id="head">
-            <h1> 欢迎使用AAapp, {{ user.get_full_name }}, 你上次登录时间是 {{ user.last_login }} </h1>
+            <h1> 欢迎使用 Renren AA app </h1>
+            {% if user.is_authenticated %}
+            <p> {{ user.get_full_name }}, 你上次登录时间是 {{ user.last_login }}, 余额： {{ user.accountinfo.balence }} </p>
+            {% endif %}
         </div>
         <div id="content">
         {% block content %}
