@@ -56,7 +56,7 @@ def new_expense(request):
                 except Exception as e:
                     pass
             send_mail('AAapp消费记录', '你花费了 %d 于 %s' % (each, newExpense.pub_datetime),
-                    'ccl1115@gmail.com',
+                    'renrenaaapp@gmail.com',
                     [user.email for user in expense.participants.all()],
                     fail_silently=False)
             return redirect('/')
