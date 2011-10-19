@@ -49,18 +49,16 @@ def new_expense(request):
             newExpense = newExpenseForm.save()
             newExpense.save()
             each = newExpense.each()
-            print each
             for user in newExpense.participants.all():
                 try:
                     user.accountinfo.balence -= each
-                    print user
                     user.accountinfo.save()
                 except Exception as e:
                     pass
-            #send_mail('AA notify', 'You expense %d at %s' % (each, newExpense.pub_datetime),
-            #        'ccl1115@gmail.com',
-            #        [user.email for user in expense.participants.all()],
-            #        fail_silently=True)
+            send_mail('AAapp消费记录', '你花费了 %d 于 %s' % (each, newExpense.pub_datetime),
+                    'ccl1115@gmail.com',
+                    [user.email for user in expense.participants.all()],
+                    fail_silently=False)
             return redirect('/')
     else:
         newExpenseForm = NewExpenseForm()

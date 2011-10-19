@@ -152,5 +152,5 @@ LOGGING = {
 EMAIL_HOST = 'smtp.google.com'
 EMAIL_PORT = 465
 
-EMAIL_HOST_USER = 'ccl1115@gmail.com'
-EMAIL_HOST_PASSWORD = '0612053kljc'
+EMAIL_HOST_USER = 'renrenaaapp@gmail.com'
+EMAIL_HOST_PASSWORD = 'renrenaaapp'
