@@ -64,8 +64,11 @@ def new_expense(request):
                     user.accountinfo.balence -= each
                     user.accountinfo.save()
                 except Exception as e:
+                    print e
                     pass
-            send_mail('AAapp消费记录 - [%s]', '你花费了 %d 于 %s' % (expense.title, each, expense.pub_datetime),
+            print expense.title
+            subject = 'AAapp - ' + expense.title
+            send_mail(subject, '你花费了 %d 于 %s' % (each, expense.pub_datetime),
                     settings.SEND_MAIL_USER,
                     [user.email for user in expense.participants.all()],
                     fail_silently=False)

@@ -12,14 +12,14 @@
 <div>
     <form id="frm" action="." method="post">
         {{ form.as_p }}
-        <input type="submit" value="confirm()" />
+        <input type="submit" value="Go!" onClick="sure()" />
     </form>
 </div>
 <script type="text/javascript">
-    function confirm() {
-        m = message('确认创建么？');
-        if(m.confirm()) {
+    function sure() {
+        if(confirm("确认创建？")) {
             frm.submit(); 
         }
     }
+</script>
 {% endblock %}
