@@ -14,6 +14,9 @@ class Expense(models.Model):
     def each(self):
         return self.money / len(self.participants.all())
 
+    class Meta:
+        ordering = ['-pub_datetime']
+
 class Approve(models.Model):
     expense = models.OneToOneField(Expense)
     pros = models.ManyToManyField(User, related_name="pro_set")

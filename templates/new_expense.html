@@ -15,9 +15,14 @@
         <input type="submit" value="Go!" onClick="sure()" />
     </form>
 </div>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
 <script type="text/javascript">
     function sure() {
-        if(confirm("确认创建？")) {
+        var count = $(':checked').length;
+        var total = $('#id_money').val();
+        var each = parseInt(total)/count;
+        var message = "总额:" + total + ", 人均：" + each + ". 确认创建?";
+        if(confirm(message)) {
             frm.submit(); 
         }
     }
