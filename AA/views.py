@@ -8,6 +8,7 @@ from django.utils import simplejson
 from django.contrib.auth import authenticate, login, logout
 from django.core.mail import send_mail
 from django.contrib.auth.models import User
+from AAapp import settings
 
 from AA.models import AccountInfo, Expense, Approve
 from AA.forms import NewExpenseForm, NewAccountForm, LoginForm
@@ -59,7 +60,7 @@ def new_expense(request):
                 except Exception as e:
                     pass
             send_mail('AAapp消费记录', '你花费了 %d 于 %s' % (each, expense.pub_datetime),
-                    'su@dustr.info',
+                    settings.SEND_MAIL_USER,
                     [user.email for user in expense.participants.all()],
                     fail_silently=False)
             return redirect('/')
