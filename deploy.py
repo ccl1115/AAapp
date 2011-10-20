@@ -149,8 +149,7 @@ LOGGING = {
     }
 }
 
-EMAIL_HOST = 'smtp.googlemail.com'
-EMAIL_PORT = 465
+EMAIL_HOST = 'localhost'
+EMAIL_PORT = 25
 
-EMAIL_HOST_USER = 'renrenaaapp@gmail.com'
-EMAIL_HOST_PASSWORD = 'renrenaaapp00'
+EMAIL_HOST_USER = 'renrenaaapp@dustr.info'
