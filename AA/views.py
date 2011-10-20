@@ -8,6 +8,8 @@ from django.utils import simplejson
 from django.contrib.auth import authenticate, login, logout
 from django.core.mail import send_mail
 from django.contrib.auth.models import User
+from django.utils import simplejson
+
 from AAapp import settings
 
 from AA.models import AccountInfo, Expense, Approve
@@ -15,6 +17,10 @@ from AA.forms import NewExpenseForm, NewAccountForm, LoginForm
 
 def welcome(request):
     if request.user.is_authenticated():
+        if request.user.is_superuser:
+            return render_to_response('admin.html', 
+                    { 'allusers':User.objects.filter(is_staff=False) },
+                    context_instance=RequestContext(request))
         return render_to_response('index.html', context_instance=RequestContext(request))
     else:
         if request.method == 'POST':
@@ -59,7 +65,7 @@ def new_expense(request):
                     user.accountinfo.save()
                 except Exception as e:
                     pass
-            send_mail('AAapp消费记录', '你花费了 %d 于 %s' % (each, expense.pub_datetime),
+            send_mail('AAapp消费记录 - [%s]', '你花费了 %d 于 %s' % (expense.title, each, expense.pub_datetime),
                     settings.SEND_MAIL_USER,
                     [user.email for user in expense.participants.all()],
                     fail_silently=False)
@@ -116,5 +122,11 @@ def signoff(request):
         logout(request)
         return redirect('/')
 
-def help(request):
-    return render_to_response('help.html')
+@login_required
+def ajax_balence_detail(request, id):
+    try:
+        user = User.objects.get(id=int(id))
+        return simplejson.dumps(user.expense_set)
+    except Exception as e:
+        print e
+        raise Http404

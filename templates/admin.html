@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Welcome {{ user.username }}
+{% endblock %}
+
+
+{% block content %}
+
+<ul>
+    {% if user.is_superuser %}
+    <li><a href="/new_expense">新消费</a></li>
+    <li><a href="/new_account">新账户</a></li>
+    {% endif %}
+    <li><a href="/logout">登出</a></li>
+</ul>
+<div class="column">
+    {% if user.is_superuser %}
+        <h1>账户明细</h1>
+        <table border="1px" cellpadding="5px">
+            <tr>
+                <td>账户</td>
+                <td>余额</td>
+            </tr>
+            {% for user in allusers %}
+            <tr>
+                <td>{{ user.get_full_name }}</td>
+                <td>{{ user.accountinfo.balence }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+
+        <div id="detail">
+        </div>
+    {% else %}
+        <p>Permission Denied</p>
+    {% endif %}
+</div>
+{% endblock %}

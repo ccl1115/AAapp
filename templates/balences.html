@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Welcome {{ user.username }}
+{% endblock %}
+
+
+{% block content %}
+
+<ul>
+    {% if user.is_superuser %}
+    <li><a href="/new_expense">新消费</a></li>
+    <li><a href="/new_account">新账户</a></li>
+    {% endif %}
+    <li><a href="/logout">登出</a></li>
+    <li><a href="/">返回</a></li>
+</ul>
+<div class="column">
+    {% if user.is_superuser %}
+            
+    {% else %}
+        <h1>你参与的消费</h1>
+        {% if user.expense_set.all %}
+            <ul>
+                {% for expense in user.expense_set.all %}
+                <a href="/view_expense/{{ expense.id }}/">
+                    <li><div>
+                        <p>{{ expense.title }}<span>({{ expense.each }})</p>
+                        <span>at {{ expense.pub_datetime }}</span>
+                    </div></li>
+                </a>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>没有任何你参与的消费</p>
+        {% endif %}
+    {% endif %}
+</div>
+{% endblock %}
