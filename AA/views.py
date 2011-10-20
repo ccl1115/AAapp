@@ -66,7 +66,6 @@ def new_expense(request):
                 except Exception as e:
                     print e
                     pass
-            print expense.title
             subject = 'AAapp - ' + expense.title
             send_mail(subject, '你花费了 %d 于 %s' % (each, expense.pub_datetime),
                     settings.SEND_MAIL_USER,
