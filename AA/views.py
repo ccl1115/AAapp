@@ -14,6 +14,7 @@ from AAapp import settings
 
 from AA.models import AccountInfo, Expense, Approve
 from AA.forms import NewExpenseForm, NewAccountForm, LoginForm
+from AA.service import send_notice_email
 
 def welcome(request):
     if request.user.is_authenticated():
@@ -66,11 +67,7 @@ def new_expense(request):
                 except Exception as e:
                     print e
                     pass
-            subject = 'AAapp - ' + expense.title
-            send_mail(subject, '你花费了 %d 于 %s' % (each, expense.pub_datetime),
-                    settings.SEND_MAIL_USER,
-                    [user.email for user in expense.participants.all()],
-                    fail_silently=False)
+            send_notice_email(expense)
             return redirect('/')
     else:
         newExpenseForm = NewExpenseForm()
