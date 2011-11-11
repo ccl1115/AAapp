@@ -19,8 +19,12 @@ from AA.service import send_notice_email
 def welcome(request):
     if request.user.is_authenticated():
         if request.user.is_superuser:
+            accountInfos = AccountInfo.objects.all()
+            total = 0
+            for accountInfo in accountInfos:
+                total += accountInfo.balence
             return render_to_response('admin.html', 
-                    { 'allusers':User.objects.filter(is_staff=False) },
+                    { 'allusers':User.objects.filter(is_staff=False), 'total':total },
                     context_instance=RequestContext(request))
         return render_to_response('index.html', context_instance=RequestContext(request))
     else:

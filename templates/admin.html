@@ -28,6 +28,10 @@ Welcome {{ user.username }}
                 <td>{{ user.accountinfo.balence }}</td>
             </tr>
             {% endfor %}
+            <tr>
+                <td>总计</td>
+                <td>{{ total }}</td>
+            </tr>
         </table>
 
         <div id="detail">
